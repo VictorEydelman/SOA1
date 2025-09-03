@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Route
+  version: "1.0"
+servers:
+  - url: http://localhost:5666/api/main
+paths:
+  /a:
+    get:
+      summary: f
+      tags:
+        - T
+      operationId: get
+      responses:
+        '200':
+          description: d
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+
+components:
+  schemas:
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          description: |
+            Значение поля должно быть больше 0, уникальным и генерироваться автоматически.
+        name:
+          type: string
+          example: "Route Name"
+          description: |
+            Поле не может быть null, строка не может быть пустой.
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+          example: "2023-10-01T10:00:00Z"
+          description: |
+            Поле не может быть null, значение этого поля должно генерироваться автоматически.
+        from:
+          $ref: '#/components/schemas/Location'
+        to:
+          $ref: '#/components/schemas/Location'
+        distance:
+          type: integer
+          format: int32
+          example: 100
+          description: |
+            Поле может быть null, значение поля должно быть больше 1.
+
+    Coordinates:
+      type: object
+      properties:
+        x:
+          type: integer
+          example: 10
+          description: "Поле не может быть null."
+        y:
+          type: number
+          format: float
+          example: 20.5
+
+    Location:
+      type: object
+      properties:
+        x:
+          type: integer
+          example: 5
+        y:
+          type: integer
+          format: int64
+          example: 10
+          description: "Поле не может быть null."
+        name:
+          type: string
+          nullable: true
+          example: "Location Name"
