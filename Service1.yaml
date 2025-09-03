@@ -186,20 +186,8 @@ paths:
 
   /routes/sum-distance:
     get:
-      summary: Сумма значений поля distance для всех объектов (с учётом опциональной фильтрации)
-      description: Возвращает сумму (integer) всех ненулевых значений `distance`. Поддерживает те же параметры фильтрации, что и /routes.
-      parameters:
-        - name: filter
-          in: query
-          description: Универсальный фильтр (см. /routes)
-          schema:
-            type: string
-        - name: distance_gt
-          in: query
-          description: |  
-            Пример: подсчитать только distance > value
-          schema:
-            type: integer
+      summary: Сумма значений поля distance для всех объектов
+      description: Возвращает сумму (integer) всех значений `distance`
       responses:
         '200':
           description: Сумма distance (XML)
@@ -238,7 +226,7 @@ paths:
   /routes/name-starts-with:
     get:
       summary: Вернуть массив объектов, значение name которых начинается с заданной подстроки
-      description: Возвращает список объектов `Route`, у которых поле `name` начинается с переданного префикса. Поддерживает постраничность и сортировку.
+      description: Возвращает список объектов `Route`, у которых поле `name` начинается с переданного префикса
       parameters:
         - name: prefix
           in: query
