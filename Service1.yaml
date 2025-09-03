@@ -1,83 +1,475 @@
 openapi: 3.0.3
 info:
-  title: Route
-  version: "1.0"
+  title: Routes Collection API
+  version: "1.0.0"
+  description: |
+    RESTful API для управления коллекцией объектов `Route`.
+    - Все объекты передаются и возвращаются в формате XML (`application/xml`).
+    - Параметры фильтрации, сортировки и постраничной навигации передаются через URL query-параметры.
+    - При нарушении ограничений целостности возвращаются соответствующие HTTP-коды ошибок.
 servers:
-  - url: http://localhost:5666/api/main
+  - url: http://localhost:5666/api/v1
 paths:
-  /a:
+  /routes:
     get:
-      summary: f
-      tags:
-        - T
-      operationId: get
+      summary: Получить список маршрутов
+      description: |
+        Возвращает массив объектов `Route`. Поддерживается фильтрация по любому полю Route,
+        сортировка и постраничный вывод.
+        Фильтрация возможна конкретными query-параметрами для полей, например `name`, `distance`, `coordinates.x`, ...
+        Поля, управляющие выдачей: `page` (номер страницы, начиная с 0), `size` (размер страницы), `sort`.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
+        - $ref: '#/components/parameters/sort'
+        - name: id
+          in: query
+          description: id равен
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: name
+          in: query
+          description: name равен
+          schema:
+            type: string
+        - name: distance
+          in: query
+          description: distance равен
+          schema:
+            type: integer
+        - name: coordinates.x
+          in: query
+          description: coordinates.x равен
+          schema:
+            type: integer
+        - name: coordinates.y
+          in: query
+          description: coordinates.y равен (float)
+          schema:
+            type: number
+            format: float
+        - name: to.name
+          in: query
+          description: to.name равен
+          schema:
+            type: string
+        - name: from.name
+          in: query
+          description: from.name равен
+          schema:
+            type: string
       responses:
         '200':
-          description: d
+          description: Список маршрутов (XML)
           content:
-            application/json:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RouteList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      summary: Добавить новый маршрут
+      description: |
+        Создаёт новый `Route`. Тело запроса — XML-представление объекта (см. схему Route).
+        Поля `id` и `creationDate` генерируются сервером (readOnly). Остальные поля проверяются по ограничениям.
+        Все дополнительные управляющие параметры (если нужны) — через query-параметры.
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Route'
+
+      responses:
+        '201':
+          description: Создано. Возвращает созданный объект (XML) и заголовок Location.
+          headers:
+            Location:
+              description: URL созданного ресурса
+              schema:
+                type: string
+          content:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Route'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /routes/{id}:
+    get:
+      summary: Получить маршрут по id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Маршрут найден (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    put:
+      summary: Обновить маршрут по id
+      description: |
+        Обновляет существующий маршрут. id из пути указывает на обновляемый ресурс.
+        Тело запроса — XML с новой версией объекта (поля id и creationDate игнорируются/readOnly).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Route'
+      responses:
+        '200':
+          description: Успешно обновлён, возвращает обновлённый объект (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    delete:
+      summary: Удалить маршрут по id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '204':
+          description: Успешно удалён (нет содержимого)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /routes/sum-distance:
+    get:
+      summary: Сумма значений поля distance для всех объектов (с учётом опциональной фильтрации)
+      description: Возвращает сумму (integer) всех ненулевых значений `distance`. Поддерживает те же параметры фильтрации, что и /routes.
+      parameters:
+        - name: filter
+          in: query
+          description: Универсальный фильтр (см. /routes)
+          schema:
+            type: string
+        - name: distance_gt
+          in: query
+          description: |  
+            Пример: подсчитать только distance > value
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Сумма distance (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SumResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /routes/count-distance-less:
+    get:
+      summary: Вернуть количество объектов, distance < заданного
+      description: Для подсчёта требуется query-параметр `threshold` — число. Возвращает число (XML).
+      parameters:
+        - name: threshold
+          in: query
+          required: true
+          description: Пороговое значение. Подсчитываются объекты, у которых distance < threshold.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Количество объектов (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /routes/name-starts-with:
+    get:
+      summary: Вернуть массив объектов, значение name которых начинается с заданной подстроки
+      description: Возвращает список объектов `Route`, у которых поле `name` начинается с переданного префикса. Поддерживает постраничность и сортировку.
+      parameters:
+        - name: prefix
+          in: query
+          required: true
+          description: Подстрока-префикс (по ней выполняется поиск начала строки)
+          schema:
+            type: string
+#        - $ref: '#/components/parameters/page'
+#        - $ref: '#/components/parameters/size'
+      responses:
+        '200':
+          description: Список маршрутов (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RouteList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
 
 components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Номер страницы (начиная с 0)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    size:
+      name: size
+      in: query
+      description: Размер страницы (количество элементов на странице)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 20
+    sort:
+      name: sort
+      in: query
+      description: |
+        Поле(я) для сортировки. Формат: field[,field2[:desc|asc],...]
+        Пример: `name:asc,distance:desc` или просто `distance`.
+      schema:
+        type: string
+
+  responses:
+    BadRequest:
+      description: Некорректный запрос (напр., неверные query-параметры)
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            example:
+              value: |
+                <error>
+                  <code>400</code>
+                  <message>Invalid parameters: page must be >= 0</message>
+                </error>
+    NotFound:
+      description: Ресурс не найден
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            example:
+              value: |
+                <error>
+                  <code>404</code>
+                  <message>Route with id 5 not found</message>
+                </error>
+    ValidationError:
+      description: Ошибка валидации данных (поле нарушает ограничения целостности)
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            example:
+              value: |
+                <error>
+                  <code>422</code>
+                  <message>distance must be greater than 1</message>
+                </error>
+    InternalError:
+      description: Внутренняя ошибка сервера
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            example:
+              value: |
+                <error>
+                  <code>500</code>
+                  <message>Internal server error</message>
+                </error>
+
   schemas:
     Route:
       type: object
+      xml:
+        name: route
       properties:
         id:
           type: integer
           format: int64
-          example: 1
-          description: |
-            Значение поля должно быть больше 0, уникальным и генерироваться автоматически.
+          minimum: 1
+          readOnly: true
+          description: "Уникальный идентификатор (генерируется автоматически, > 0)"
         name:
           type: string
-          example: "Route Name"
-          description: |
-            Поле не может быть null, строка не может быть пустой.
+          minLength: 1
+          description: "Не может быть null или пустой строки"
         coordinates:
           $ref: '#/components/schemas/Coordinates'
         creationDate:
           type: string
           format: date-time
-          example: "2023-10-01T10:00:00Z"
-          description: |
-            Поле не может быть null, значение этого поля должно генерироваться автоматически.
+          readOnly: true
+          description: "Генерируется автоматически на сервере"
         from:
           $ref: '#/components/schemas/Location'
+          nullable: true
         to:
           $ref: '#/components/schemas/Location'
         distance:
           type: integer
-          format: int32
-          example: 100
-          description: |
-            Поле может быть null, значение поля должно быть больше 1.
+          nullable: true
+          minimum: 2
+          description: "Если присутствует, должно быть > 1"
+      required:
+        - name
+        - coordinates
+        - creationDate
+        - to
+      example:
+        id: 1
+        name: Main route
+        coordinates:
+          x: 100
+          y: 12.5
+        creationDate: "2025-09-03T12:00:00Z"
+        from:
+          x: 1
+          y: 2
+          z: 3
+          name: Origin
+        to:
+          x: 10
+          y: 20
+          z: 30
+          name: Dest
+        distance: 42
 
     Coordinates:
       type: object
+      xml:
+        name: coordinates
       properties:
         x:
           type: integer
-          example: 10
-          description: "Поле не может быть null."
+          description: "Поле не может быть null"
         y:
           type: number
           format: float
-          example: 20.5
+      required:
+        - x
 
     Location:
       type: object
+      xml:
+        name: location
       properties:
         x:
           type: integer
-          example: 5
+          format: int64
         y:
           type: integer
           format: int64
-          example: 10
-          description: "Поле не может быть null."
+          description: "Поле не может быть null"
+        z:
+          type: integer
+          format: int64
         name:
           type: string
           nullable: true
-          example: "Location Name"
+          maxLength: 588
+      required:
+        - y
+
+    RouteList:
+      type: object
+      xml:
+        name: routes
+      properties:
+        route:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+          xml:
+            name: route
+            wrapped: true
+
+    Error:
+      type: object
+      xml:
+        name: error
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    SumResponse:
+      type: integer
+      xml:
+        name: sum
+      example: 295
+
+    CountResponse:
+      type: integer
+      xml:
+        name: count
+      example: 65
+
+tags:
+  - name: default
+    description: Операции над коллекцией маршрутов
