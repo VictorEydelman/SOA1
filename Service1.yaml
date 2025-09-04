@@ -13,6 +13,8 @@ paths:
   /routes:
     get:
       summary: Получить список маршрутов
+      tags:
+       - Базовые операции
       description: |
         Возвращает массив объектов `Route`. Поддерживается фильтрация по любому полю Route,
         сортировка и постраничный вывод.
@@ -110,6 +112,8 @@ paths:
 
     post:
       summary: Добавить новый маршрут
+      tags:
+        - Базовые операции
       description: |
         Создаёт новый `Route`. Тело запроса — XML-представление объекта (см. схему Route).
         Поля `id` и `creationDate` генерируются сервером (readOnly). Остальные поля проверяются по ограничениям.
@@ -136,6 +140,8 @@ paths:
   /routes/{id}:
     get:
       summary: Получить маршрут по id
+      tags:
+        - Базовые операции
       parameters:
         - name: id
           in: path
@@ -160,6 +166,8 @@ paths:
 
     put:
       summary: Обновить маршрут по id
+      tags:
+        - Базовые операции
       description: |
         Обновляет существующий маршрут. id из пути указывает на обновляемый ресурс.
         Тело запроса — XML с новой версией объекта (поля id и creationDate игнорируются/readOnly).
@@ -195,6 +203,9 @@ paths:
 
     delete:
       summary: Удалить маршрут по id
+      tags:
+        - Базовые операции
+
       parameters:
         - name: id
           in: path
@@ -217,6 +228,8 @@ paths:
     get:
       summary: Сумма значений поля distance для всех объектов
       description: Возвращает сумму (integer) всех значений `distance`
+      tags:
+        - Дополнительные операции
       responses:
         '200':
           description: Сумма distance (XML)
@@ -232,6 +245,8 @@ paths:
   /routes/count-distance-less:
     get:
       summary: Вернуть количество объектов, distance < заданного
+      tags:
+        - Дополнительные операции
       description: Для подсчёта требуется query-параметр `threshold` — число. Возвращает число (XML).
       parameters:
         - name: threshold
@@ -255,6 +270,8 @@ paths:
   /routes/name-starts-with:
     get:
       summary: Вернуть массив объектов, значение name которых начинается с заданной подстроки
+      tags:
+        - Дополнительные операции
       description: Возвращает список объектов `Route`, у которых поле `name` начинается с переданного префикса
       parameters:
         - name: prefix
@@ -488,5 +505,5 @@ components:
       example: 65
 
 tags:
-  - name: default
+  - name: Базовые операции
     description: Операции над коллекцией маршрутов

@@ -12,6 +12,8 @@ servers:
 paths:
   /routes/{id-from}/{id-to}/{order-by}:
     get:
+      tags:
+        - Операции
       summary: Найти все маршруты между указанными локациями, отсортировать список по заданному параметру
       description: |
         Возвращает массив объектов `Route` между указанными локациями. 
@@ -67,6 +69,8 @@ paths:
   /route/add/{id-from}/{id-to}/{distance}:
     post:
       summary: Добавить новый маршрут между локациями
+      tags:
+        - Операции
       description: |
         Создаёт новый `Route`. По пути передаётся location начала и конца, а также distance.
         Тело запроса — состоит name, coordinates.x, coordinates.y.
