@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: Routes Collection API 2
+  version: 1.0.0
+  description: |
+    RESTful API второй сервис для управления коллекцией объектов `Route`.
+    - Все объекты передаются и возвращаются в формате XML (`application/xml`).
+    - Параметры фильтрации, сортировки и постраничной навигации передаются через URL query-параметры.
+    - При нарушении ограничений целостности возвращаются соответствующие HTTP-коды ошибок.
+servers:
+  - url: http://localhost:5666/api/v1/navigator
+paths:
+  /routes/{id-from}/{id-to}/{order-by}:
+    get:
+      summary: Найти все маршруты между указанными локациями, отсортировать список по заданному параметру
+      description: |
+        Возвращает массив объектов `Route` между указанными локациями. 
+        Поддерживается сортировку по любому полю Route.
+        Фильтрация возможна конкретными query-параметрами для полей, например `name`, `distance`, `coordinates.x`, ...
+      parameters:
+        - name: id-from
+          in: path
+          description: id-from равен
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: id-to
+          in: path
+          description: id-to равен
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: order-by
+          description: |
+            Сортировка задаётся по параметру TypeRoute в виде: d, name, coordinates.x, coordinates.y, creationDate и т.д.
+            Порядок для сортировки задаётся через order: asc, desc
+          in: path
+          required: true
+          schema:
+            type: object
+            properties:
+              TypeRoute:
+                type: string
+                enum: [id, name, coordinates.x, coordinates.y, creationDate, from.x, from.y, from.z, from.name,
+                       to.x, to.y, to.z, to.name, distance]
+              order:
+                type: string
+                enum: [asc, desc]
+      responses:
+        '200':
+          description: Маршруты найдены
+          content:
+            application/xml:
+              schema:
+                $ref: './Service1.yaml#/components/schemas/RouteList'
+        '404':
+          $ref: './Service1.yaml#/components/responses/NotFound'
+        '400':
+          $ref: './Service1.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: './Service1.yaml#/components/responses/InternalError'
+
+  /route/add/{id-from}/{id-to}/{distance}:
+    post:
+      summary: Добавить новый маршрут между локациями
+      description: |
+        Создаёт новый `Route`. По пути передаётся location начала и конца, а также distance.
+        Тело запроса — состоит name, coordinates.x, coordinates.y.
+        Поля `id` и `creationDate` генерируются сервером (readOnly). Остальные поля проверяются по ограничениям.
+      parameters:
+        - name: id-from
+          in: path
+          description: id-from равен
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: id-to
+          in: path
+          description: id-to равен
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: distance
+          in: path
+          description: distance равен
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 2
+        - name: name
+          in: query
+          description: name равен
+          schema:
+            type: string
+        - name: coordinates.x
+          in: query
+          description: coordinates.x равен
+          schema:
+            type: integer
+        - name: coordinates.y
+          in: query
+          description: coordinates.y равен (float)
+          schema:
+            type: number
+            format: float
+      responses:
+        '201':
+          description: Создано. Возвращает созданный объект (XML)
+          content:
+            application/xml:
+              schema:
+                $ref: './Service1.yaml#/components/schemas/Route'
+        '400':
+          $ref: './Service1.yaml#/components/responses/BadRequest'
+        '422':
+          $ref: './Service1.yaml#/components/responses/ValidationError'
+        '500':
+          $ref: './Service1.yaml#/components/responses/InternalError'

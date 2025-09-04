@@ -55,11 +55,47 @@ paths:
           description: to.name равен
           schema:
             type: string
+        - name: to.x
+          in: query
+          description: to.x равен
+          schema:
+            type: integer
+            format: long
+        - name: to.y
+          in: query
+          description: to.y равен
+          schema:
+            type: integer
+            format: long
+        - name: to.z
+          in: query
+          description: to.z равен
+          schema:
+            type: integer
+            format: long
         - name: from.name
           in: query
           description: from.name равен
           schema:
             type: string
+        - name: from.x
+          in: query
+          description: from.x равен
+          schema:
+            type: integer
+            format: long
+        - name: from.y
+          in: query
+          description: from.y равен
+          schema:
+            type: integer
+            format: long
+        - name: from.z
+          in: query
+          description: from.z равен
+          schema:
+            type: integer
+            format: long
       responses:
         '200':
           description: Список маршрутов (XML)
@@ -77,22 +113,15 @@ paths:
       description: |
         Создаёт новый `Route`. Тело запроса — XML-представление объекта (см. схему Route).
         Поля `id` и `creationDate` генерируются сервером (readOnly). Остальные поля проверяются по ограничениям.
-        Все дополнительные управляющие параметры (если нужны) — через query-параметры.
       requestBody:
         required: true
         content:
           application/xml:
             schema:
               $ref: '#/components/schemas/Route'
-
       responses:
         '201':
-          description: Создано. Возвращает созданный объект (XML) и заголовок Location.
-          headers:
-            Location:
-              description: URL созданного ресурса
-              schema:
-                type: string
+          description: Создано. Возвращает созданный объект (XML).
           content:
             application/xml:
               schema:
@@ -288,7 +317,7 @@ components:
               value: |
                 <error>
                   <code>400</code>
-                  <message>Invalid parameters: page must be >= 0</message>
+                  <message>Invalid parameters</message>
                 </error>
     NotFound:
       description: Ресурс не найден
@@ -301,7 +330,7 @@ components:
               value: |
                 <error>
                   <code>404</code>
-                  <message>Route with id 5 not found</message>
+                  <message>Resource not found</message>
                 </error>
     ValidationError:
       description: Ошибка валидации данных (поле нарушает ограничения целостности)
