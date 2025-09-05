@@ -338,7 +338,7 @@ components:
 
   responses:
     BadRequest:
-      description: Некорректный запрос (напр., неверные query-параметры)
+      description: Некорректный запрос (напр., неверные параметры)
       content:
         application/xml:
           schema:
