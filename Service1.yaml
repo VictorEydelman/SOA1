@@ -224,7 +224,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
-  /routes/sum-distance:
+  /routes/distance/sum:
     get:
       summary: Сумма значений поля distance для всех объектов
       description: Возвращает сумму (integer) всех значений `distance`
@@ -242,7 +242,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
-  /routes/count-distance-less:
+  /routes/distance/count-less:
     get:
       summary: Вернуть количество объектов, distance < заданного
       tags:
@@ -267,7 +267,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
-  /routes/name-starts-with:
+  /routes/name/starts-with:
     get:
       summary: Вернуть массив объектов, значение name которых начинается с заданной подстроки
       tags:
@@ -280,8 +280,6 @@ paths:
           description: Подстрока-префикс (по ней выполняется поиск начала строки)
           schema:
             type: string
-#        - $ref: '#/components/parameters/page'
-#        - $ref: '#/components/parameters/size'
       responses:
         '200':
           description: Список маршрутов (XML)
