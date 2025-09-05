@@ -37,21 +37,13 @@ paths:
             format: int64
             minimum: 1
         - name: order-by
-          description: |
-            Сортировка задаётся по параметру TypeRoute в виде: d, name, coordinates.x, coordinates.y, creationDate и т.д.
-            Порядок для сортировки задаётся через order: asc, desc
           in: path
           required: true
+          description: |
+            Поле для сортировки. Формат: field[desc|asc]
+            Пример: `name:asc`.
           schema:
-            type: object
-            properties:
-              TypeRoute:
-                type: string
-                enum: [id, name, coordinates.x, coordinates.y, creationDate, from.x, from.y, from.z, from.name,
-                       to.x, to.y, to.z, to.name, distance]
-              order:
-                type: string
-                enum: [asc, desc]
+            $ref: './Service1.yaml#/components/parameters/sort'
       responses:
         '200':
           description: Маршруты найдены
@@ -105,14 +97,14 @@ paths:
           description: name равен
           schema:
             type: string
-        - name: coordinates.x
+        - name: coordinates-x
           in: query
-          description: coordinates.x равен
+          description: coordinates-x равен
           schema:
             type: integer
-        - name: coordinates.y
+        - name: coordinates-y
           in: query
-          description: coordinates.y равен (float)
+          description: coordinates-y равен (float)
           schema:
             type: number
             format: float

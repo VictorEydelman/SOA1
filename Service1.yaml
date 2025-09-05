@@ -41,60 +41,60 @@ paths:
           description: distance равен
           schema:
             type: integer
-        - name: coordinates.x
+        - name: coordinates-x
           in: query
-          description: coordinates.x равен
+          description: coordinates-x равен
           schema:
             type: integer
-        - name: coordinates.y
+        - name: coordinates-y
           in: query
-          description: coordinates.y равен (float)
+          description: coordinates-y равен (float)
           schema:
             type: number
             format: float
-        - name: to.name
+        - name: to-name
           in: query
-          description: to.name равен
+          description: to-name равен
           schema:
             type: string
-        - name: to.x
+        - name: to-x
           in: query
-          description: to.x равен
+          description: to-x равен
           schema:
             type: integer
             format: long
-        - name: to.y
+        - name: to-y
           in: query
-          description: to.y равен
+          description: to-y равен
           schema:
             type: integer
             format: long
-        - name: to.z
+        - name: to-z
           in: query
-          description: to.z равен
+          description: to-z равен
           schema:
             type: integer
             format: long
-        - name: from.name
+        - name: from-name
           in: query
-          description: from.name равен
+          description: from-name равен
           schema:
             type: string
-        - name: from.x
+        - name: from-x
           in: query
-          description: from.x равен
+          description: from-x равен
           schema:
             type: integer
             format: long
-        - name: from.y
+        - name: from-y
           in: query
-          description: from.y равен
+          description: from-y равен
           schema:
             type: integer
             format: long
-        - name: from.z
+        - name: from-z
           in: query
-          description: from.z равен
+          description: from-z равен
           schema:
             type: integer
             format: long
