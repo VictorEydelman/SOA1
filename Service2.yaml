@@ -57,6 +57,8 @@ paths:
           $ref: './Service1.yaml#/components/responses/BadRequest'
         '500':
           $ref: './Service1.yaml#/components/responses/InternalError'
+        '503':
+          $ref: './Service1.yaml#/components/responses/ServiceUnavailable'
 
   /route/add/{id-from}/{id-to}/{distance}:
     post:
@@ -121,3 +123,5 @@ paths:
           $ref: './Service1.yaml#/components/responses/ValidationError'
         '500':
           $ref: './Service1.yaml#/components/responses/InternalError'
+        '503':
+          $ref: './Service1.yaml#/components/responses/ServiceUnavailable'

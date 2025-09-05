@@ -109,6 +109,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     post:
       summary: Добавить новый маршрут
@@ -136,6 +138,8 @@ paths:
           $ref: '#/components/responses/ValidationError'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /routes/{id}:
     get:
@@ -163,6 +167,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     put:
       summary: Обновить маршрут по id
@@ -200,6 +206,8 @@ paths:
           $ref: '#/components/responses/ValidationError'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Удалить маршрут по id
@@ -223,6 +231,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /routes/distance/sum:
     get:
@@ -241,6 +251,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /routes/distance/count-less:
     get:
@@ -266,6 +278,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /routes/name/starts-with:
     get:
@@ -291,6 +305,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
 components:
   parameters:
@@ -327,52 +343,45 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/Error'
-          examples:
-            example:
-              value: |
-                <error>
-                  <code>400</code>
-                  <message>Invalid parameters</message>
-                </error>
+          example:
+            error: 400
+            message: Invalid parameters
     NotFound:
       description: Ресурс не найден
       content:
         application/xml:
           schema:
             $ref: '#/components/schemas/Error'
-          examples:
-            example:
-              value: |
-                <error>
-                  <code>404</code>
-                  <message>Resource not found</message>
-                </error>
+          example:
+            error: 404
+            message: Resource not found
     ValidationError:
       description: Ошибка валидации данных (поле нарушает ограничения целостности)
       content:
         application/xml:
           schema:
             $ref: '#/components/schemas/Error'
-          examples:
-            example:
-              value: |
-                <error>
-                  <code>422</code>
-                  <message>distance must be greater than 1</message>
-                </error>
+          example:
+            error: 422
+            message: Distance must be greater than 1
     InternalError:
       description: Внутренняя ошибка сервера
       content:
         application/xml:
           schema:
             $ref: '#/components/schemas/Error'
-          examples:
-            example:
-              value: |
-                <error>
-                  <code>500</code>
-                  <message>Internal server error</message>
-                </error>
+          example:
+            error: 500
+            message: Internal server error
+    ServiceUnavailable:
+      description: БД недоступна в данный момент
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 503
+            message: Database unavalible
 
   schemas:
     Route:
@@ -444,6 +453,7 @@ components:
           format: float
       required:
         - x
+        - y
 
     Location:
       type: object
@@ -465,7 +475,9 @@ components:
           nullable: true
           maxLength: 588
       required:
+        - x
         - y
+        - z
 
     RouteList:
       type: object
