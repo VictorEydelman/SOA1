@@ -1,11 +1,10 @@
 package ru.itmo.service2.resource;
 
 import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import ru.itmo.service2.domain.Location;
-import ru.itmo.service2.domain.Route;
 import ru.itmo.service2.service.RouteService;
 
 @Path("/navigator")
@@ -23,11 +22,8 @@ public class RoutesResource {
             @PathParam("id-to") long idTo,
             @PathParam("order-by") String orderBy
     ) {
-        routeService.a();
-        var route = new Route();
-        route.setTo(new Location());
-        route.getTo().setId(idTo);
-        return Response.ok(route).build();
+        var res = routeService.findRoutes(idFrom, idTo, orderBy);
+        return Response.ok(res).build();
     }
 
     @POST
@@ -35,12 +31,13 @@ public class RoutesResource {
     public Response addRoute(
             @PathParam("id-from") long idFrom,
             @PathParam("id-to") long idTo,
-            @PathParam("distance") int distance
+            @PathParam("distance") int distance,
+            @NotNull @QueryParam("name") String name,
+            @NotNull @QueryParam("coordinates-x") Integer x,
+            @NotNull @QueryParam("coordinates-y") Float y
     ) {
-        var route = new Route();
-        route.setTo(new Location());
-        route.getTo().setId(idTo);
-        return Response.ok(route).build();
+        var res = routeService.addRoute(idFrom, idTo, distance, name, x, y);
+        return Response.status(Response.Status.CREATED).entity(res).build();
     }
 
 }

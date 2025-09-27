@@ -1,5 +1,6 @@
 package ru.itmo.service2.domain;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Coordinates {
-    private Long id;
-    private Integer x; //Поле не может быть null
-    private float y;
+@XmlRootElement
+public class Error {
+    private int error;
+    private String message;
 }
