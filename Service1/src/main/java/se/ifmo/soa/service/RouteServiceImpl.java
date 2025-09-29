@@ -80,7 +80,7 @@ public class RouteServiceImpl implements RouteService {
             List<Order> orders = new ArrayList<>();
             for (var s : sorts) {
                 String[] ord = s.split(":");
-                Order order = ord[1].equals("asc") ?
+                Order order = ord.length < 2 || ord[1].equals("asc") ?
                         cb.asc(root.get(ord[0])) :
                         cb.desc(root.get(ord[0]));
                 orders.add(order);

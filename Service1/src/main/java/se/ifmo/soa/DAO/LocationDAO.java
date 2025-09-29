@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class LocationDAO {
+
+    private Long id;
+
     @JacksonXmlProperty(localName = "x")
     private Long x;
 

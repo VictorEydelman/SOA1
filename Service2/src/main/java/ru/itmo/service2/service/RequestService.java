@@ -3,6 +3,7 @@ package ru.itmo.service2.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ClientErrorException;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 @ApplicationScoped
 public class RequestService {
 
-    public final static String S1_BASE_URL = "http://localhost:5666/api/v1";
+    public final static String S1_BASE_URL = "http://localhost:8080/api/v1";
 
     @Inject
     private Client client;
@@ -25,7 +26,7 @@ public class RequestService {
         try (var response = target.request()
                 .method(method, entity)) {
             if (response.getStatus() / 100 != 2) {
-                throw new ClientErrorException(response);
+                throw new WebApplicationException(response);
             }
             return response.readEntity(responseType);
         }

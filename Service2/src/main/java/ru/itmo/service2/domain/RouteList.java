@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import java.util.List;
 public class RouteList {
 
     @Getter(onMethod_ = @XmlElement(name = "route"))
-    private List<Route> routes;
+    private List<Route> routes = new ArrayList<>();
 
     public static RouteList of(Route... routes) {
         return new RouteList(List.of(routes));

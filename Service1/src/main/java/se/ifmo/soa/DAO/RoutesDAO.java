@@ -1,12 +1,9 @@
 package se.ifmo.soa.DAO;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import se.ifmo.soa.entites.Coordinates;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,9 +16,9 @@ public class RoutesDAO {
     @JacksonXmlProperty(localName = "coordinates")
     private CoordinatesDAO coordinates;
 
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "location")
-    private List<LocationDAO> locations;
+    private LocationDAO from;
+
+    private LocationDAO to;
 
     @JacksonXmlProperty(localName = "distance")
     private Integer distance;

@@ -2,7 +2,7 @@
 import {ref, onMounted} from 'vue'
 import xml2js from 'xml2js'
 
-const BASE_URL = '/api' // 'http://localhost:5666/api/v1/routes'
+const BASE_URL = 'http://localhost:8080/api/v1'
 
 function normalizeLocation(location: Location): Location {
   return {

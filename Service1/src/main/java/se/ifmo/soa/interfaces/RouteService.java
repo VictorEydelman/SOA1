@@ -1,6 +1,7 @@
 package se.ifmo.soa.interfaces;
 
 import jakarta.persistence.criteria.*;
+import se.ifmo.soa.DAO.LocationDAO;
 import se.ifmo.soa.DAO.PaginatedResult;
 import se.ifmo.soa.entites.Coordinates;
 import se.ifmo.soa.entites.Location;

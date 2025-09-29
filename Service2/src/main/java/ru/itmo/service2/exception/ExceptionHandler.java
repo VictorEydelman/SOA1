@@ -10,6 +10,7 @@ public class ExceptionHandler implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception e) {
+        e.printStackTrace();
         return Response.status(500)
                 .entity(Error.builder()
                         .error(500)

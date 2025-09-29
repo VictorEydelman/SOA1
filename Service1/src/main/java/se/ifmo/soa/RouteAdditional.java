@@ -20,7 +20,7 @@ public class RouteAdditional {
         return Response.ok(routeService.getDistance()).build();
     }
     @GET
-    @Path("/distance/sum")
+    @Path("/distance/count-less")
     public Response distanceCountLess(@QueryParam("threshold") Integer threshold){
         return Response.ok(routeService.CountDistanceLessThan(threshold)).build();
     }

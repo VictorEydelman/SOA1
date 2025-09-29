@@ -8,7 +8,7 @@ info:
     - Параметры фильтрации, сортировки и постраничной навигации передаются через URL query-параметры.
     - При нарушении ограничений целостности возвращаются соответствующие HTTP-коды ошибок.
 servers:
-  - url: http://localhost:5666/api/v1/navigator
+  - url: http://localhost:24770/Service2-1.0/api/v1/navigator
 paths:
   /routes/{id-from}/{id-to}/{order-by}:
     get:

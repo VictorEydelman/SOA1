@@ -8,7 +8,7 @@ info:
     - Параметры фильтрации, сортировки и постраничной навигации передаются через URL query-параметры.
     - При нарушении ограничений целостности возвращаются соответствующие HTTP-коды ошибок.
 servers:
-  - url: http://localhost:5666/api/v1
+  - url: http://localhost:8080/api/v1
 paths:
   /routes:
     get:
@@ -458,7 +458,7 @@ components:
     Location:
       type: object
       xml:
-        name: location
+
       properties:
         x:
           type: integer
