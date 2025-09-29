@@ -1,0 +1,18 @@
+<resources>
+    <jdbc-connection-pool
+            name="PostgresPool"
+            res-type="javax.sql.DataSource"
+            datasource-classname="org.postgresql.ds.PGSimpleDataSource">
+        <property name="url" value="jdbc:postgresql://localhost:5432/studs"/>
+        <property name="user" value="s291485"/>
+        <property name="password" value="qz6XMfGNKAgNOWkq"/>
+        <property name="portNumber" value="5432"/>
+        <property name="databaseName" value="studs"/>
+        <property name="serverName" value="localhost"/>
+    </jdbc-connection-pool>
+
+    <jdbc-resource
+            jndi-name="jdbc/postgresDS"
+            pool-name="PostgresPool"
+            enabled="true"/>
+</resources>
