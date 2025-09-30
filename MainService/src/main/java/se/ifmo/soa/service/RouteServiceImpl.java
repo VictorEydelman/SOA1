@@ -157,7 +157,7 @@ public class RouteServiceImpl implements RouteService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Route> query = cb.createQuery(Route.class);
         Root<Route> root = query.from(Route.class);
-        query.where(cb.like(root.get("name"),prefix));
+        query.where(cb.like(root.get("name"),prefix + "%"));
         return entityManager.createQuery(query).getResultList();
     }
 }
