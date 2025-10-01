@@ -1,8 +1,9 @@
 package se.ifmo.soa.interfaces;
 
-import jakarta.persistence.criteria.*;
-import se.ifmo.soa.DAO.LocationDAO;
-import se.ifmo.soa.DAO.PaginatedResult;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import se.ifmo.soa.entites.Coordinates;
 import se.ifmo.soa.entites.Location;
 import se.ifmo.soa.entites.Route;
@@ -36,7 +37,7 @@ public interface RouteService {
 
     public void addPredicatesCoordinates(Object param, List<Predicate> predicates, String paramName, CriteriaBuilder cb, Join<Route, Coordinates> root);
     public void addPredicatesLocation(Object param, List<Predicate> predicates, String paramName, CriteriaBuilder cb, Join<Route, Location> root);
-    public boolean deleteById(Integer id);
+    public void deleteById(Integer id);
     public Integer getDistance();
     public Long CountDistanceLessThan(Integer threshold);
     public List<Route> getAllbyStartName(String prefix);

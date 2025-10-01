@@ -1,13 +1,12 @@
 package se.ifmo.soa;
 
-import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.ifmo.soa.DAO.DistanceCount;
 import se.ifmo.soa.DAO.DistanceSum;
 import se.ifmo.soa.DAO.RouteList;
-import se.ifmo.soa.entites.Route;
 import se.ifmo.soa.interfaces.RouteService;
 
 @Path("/routes")
@@ -15,7 +14,7 @@ import se.ifmo.soa.interfaces.RouteService;
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_XML)
 public class RouteAdditional {
-    @EJB
+    @Inject
     private RouteService routeService;
     @GET
     @Path("/distance/sum")

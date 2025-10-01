@@ -1,7 +1,7 @@
 package se.ifmo.soa;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -24,9 +24,9 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_XML)
 public class RoutesBase {
-    @EJB
+    @Inject
     private RouteService routeService;
-    @EJB
+    @Inject
     private LocationService locationService;
 
     private final XmlMapper xmlMapper = new XmlMapper();
@@ -100,6 +100,7 @@ public class RoutesBase {
     @DELETE
     @Path("/{id}")
     public Response deleteRoute(@PathParam("id") Integer id) {
-        return Response.status(Response.Status.CREATED).entity(String.valueOf(routeService.deleteById(id))).build();
+        routeService.deleteById(id);
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

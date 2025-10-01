@@ -70,7 +70,7 @@ const {data, error, pending, refresh} = useFetch(`${BASE_URL}/routes`, {
 const deleteRoute = (id: number) => {
   $fetch(`${BASE_URL}/routes/${id}`, {
     method: 'delete'
-  }).then(refresh);
+  }).then(refresh).catch(err => error.value = err);
 };
 
 const columns: TableColumn<Route>[] = [

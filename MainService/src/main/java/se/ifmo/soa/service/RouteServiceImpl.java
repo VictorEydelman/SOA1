@@ -1,27 +1,19 @@
 package se.ifmo.soa.service;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.QueryParam;
-import se.ifmo.soa.DAO.PaginatedResult;
 import se.ifmo.soa.entites.Coordinates;
 import se.ifmo.soa.entites.Location;
 import se.ifmo.soa.entites.Route;
 import se.ifmo.soa.interfaces.RouteService;
 
-import javax.swing.*;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-@Stateless
+@ApplicationScoped
 @Transactional
 public class RouteServiceImpl implements RouteService {
     @PersistenceContext(unitName = "route")
@@ -122,14 +114,9 @@ public class RouteServiceImpl implements RouteService {
     }
     @Transactional
     @Override
-    public boolean deleteById(Integer id){
-        try {
-            Route route = getById(id);
-            entityManager.remove(route);
-            return true;
-        } catch (NoResultException e){
-            return false;
-        }
+    public void deleteById(Integer id) {
+        Route route = getById(id);
+        entityManager.remove(route);
     }
     @Transactional
     @Override

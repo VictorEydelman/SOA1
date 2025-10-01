@@ -490,7 +490,6 @@ components:
             $ref: '#/components/schemas/Route'
           xml:
             name: route
-            wrapped: true
 
     Error:
       type: object

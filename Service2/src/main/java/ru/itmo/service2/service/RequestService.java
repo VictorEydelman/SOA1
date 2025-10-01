@@ -2,7 +2,6 @@ package ru.itmo.service2.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
@@ -26,7 +25,7 @@ public class RequestService {
         try (var response = target.request()
                 .method(method, entity)) {
             if (response.getStatus() / 100 != 2) {
-                throw new WebApplicationException(response);
+                throw new WebApplicationException(response.readEntity(String.class), response);
             }
             return response.readEntity(responseType);
         }
