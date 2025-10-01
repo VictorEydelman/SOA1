@@ -60,15 +60,18 @@ const query = computed(() => ({
   ...filterValues.value
 }));
 
-const {data, error, pending} = useFetch(BASE_URL + '/routes', {
+const {data, error, pending, refresh} = useFetch(`${BASE_URL}/routes`, {
   method: 'get',
   lazy: true,
   transform: async (data) => data && (await parseXmlRoutes(data)).map(normalizeRoute),
   query
 });
 
-const routes = ref<Route[]>(data?.value || []);
-
+const deleteRoute = (id: number) => {
+  $fetch(`${BASE_URL}/routes/${id}`, {
+    method: 'delete'
+  }).then(refresh);
+};
 
 const columns: TableColumn<Route>[] = [
   {
@@ -117,6 +120,13 @@ const columns: TableColumn<Route>[] = [
     name: "Distance",
     accessorKey: 'distance',
     sortable: true
+  }, {
+    name: " ",
+    cell: props => h(UButton, {
+      color: 'error', variant: 'outline',
+      label: 'Delete',
+      onClick: () => deleteRoute(props.row.getAllCells()[0].getValue())
+    })
   }
 ]
 
