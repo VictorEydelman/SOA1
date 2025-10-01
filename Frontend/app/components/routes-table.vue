@@ -67,10 +67,11 @@ const {data, error, pending, refresh} = useFetch(`${BASE_URL}/routes`, {
   query
 });
 
-const deleteRoute = (id: number) => {
-  $fetch(`${BASE_URL}/routes/${id}`, {
+const deleteRoute = async (id: number) => {
+  await $fetch(`${BASE_URL}/routes/${id}`, {
     method: 'delete'
-  }).then(refresh).catch(err => error.value = err);
+  }).catch(err => error.value = err);
+  await refresh();
 };
 
 const columns: TableColumn<Route>[] = [
@@ -124,7 +125,7 @@ const columns: TableColumn<Route>[] = [
     name: " ",
     cell: props => h(UButton, {
       color: 'error', variant: 'outline',
-      label: 'Delete',
+       icon: 'i-lucide-trash', loadingAuto: true,
       onClick: () => deleteRoute(props.row.getAllCells()[0].getValue())
     })
   }
