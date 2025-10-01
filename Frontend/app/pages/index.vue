@@ -4,5 +4,11 @@
       <h1 class="text-2xl font-semibold">Routes</h1>
     </div>
     <RoutesTable />
+    <div class="flex items-center justify-between mb-4 pt-8">
+      <h1 class="text-2xl font-semibold">Additional Operations</h1>
+    </div>
+    <AdditionalOperations />
   </div>
 </template>
+<script setup lang="ts">
+</script>
