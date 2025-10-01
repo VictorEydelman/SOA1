@@ -10,14 +10,14 @@ const MOCK_XML = `<?xml version="1.0" encoding="UTF-8"?>
     </coordinates>
     <creationDate>2025-09-03T12:00:00Z</creationDate>
     <from>
-    <id>1</id>
+    <id>4</id>
       <x>1</x>
       <y>2</y>
       <z>3</z>
       <name>Origin</name>
     </from>
     <to>
-    <id>1</id>
+    <id>5</id>
       <x>10</x>
       <y>20</y>
       <z>30</z>
@@ -53,10 +53,11 @@ const MOCK_XML = `<?xml version="1.0" encoding="UTF-8"?>
 
 </routes>`
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
     // return sendError(event, createError({
     //     statusCode: 500,
     //     statusMessage: 'q'
     // }))
+    //await new Promise(r => setTimeout(r, 2000))
     return MOCK_XML
 })

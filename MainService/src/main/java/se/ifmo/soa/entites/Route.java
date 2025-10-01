@@ -2,7 +2,9 @@ package se.ifmo.soa.entites;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.*;
+import se.ifmo.soa.config.ZonedDateTimeXmlAdapter;
 
 @Entity
 @Table(name = "soa_route")
@@ -22,6 +24,7 @@ public class Route {
     @JoinColumn(name = "coordinates_id", nullable = false)
     private Coordinates coordinates; //Поле не может быть null
     @Column(nullable = false)
+    @XmlJavaTypeAdapter(ZonedDateTimeXmlAdapter.class)
     private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "from_location_id")
