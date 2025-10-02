@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
+import type {FormSubmitEvent} from '@nuxt/ui'
 
 definePageMeta({
   title: 'update'
@@ -137,7 +137,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 	${routeData.distance ? `	<distance>${routeData.distance}</distance>` : ''}
 </route>`
 
-    const response = await $fetch('http://localhost:5666/api/v1/routes', {
+    const response = await $fetch(`${BASE_URL}/routes`, {
       method: 'POST',
       body: xmlData,
       headers: {

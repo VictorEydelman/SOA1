@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import xml2js from "xml2js";
 
 import {BASE_URL, parseXml} from "~/utils/routes";
 

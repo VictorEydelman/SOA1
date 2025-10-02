@@ -19,8 +19,4 @@
   </div>
 </template>
 <script setup lang="ts">
-import FormRoute from "~/pages/form-route.vue";
-import RoutesTable from "~/pages/components/routes-table.vue";
-import AdditionalOperations from "~/pages/components/additional-operations.vue";
-import AdditionalTables from "~/pages/components/additional-tables.vue";
 </script>

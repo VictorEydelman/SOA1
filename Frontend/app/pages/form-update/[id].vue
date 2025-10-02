@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
+import type {FormSubmitEvent} from '@nuxt/ui'
 
 // Valibot схема для валидации
 const schema = v.object({
@@ -93,7 +93,7 @@ const currentId = computed(() => {
 async function fetchRouteData(id: number) {
   try {
     isLoading.value = true
-    const response = await $fetch(`http://localhost:5666/api/v1/routes/${id}`, {
+    const response = await $fetch(`${BASE_URL}/routes/${id}`, {
       method: 'GET',
       headers: {
         'accept': 'application/xml'
@@ -204,7 +204,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     if (isEditing.value && routeId.value) {
       // Обновление существующего маршрута
-      const response = await $fetch(`http://localhost:5666/api/v1/routes/${routeId.value}`, {
+      const response = await $fetch(`${BASE_URL}/routes/${routeId.value}`, {
         method: 'PUT',
         body: xmlData,
         headers: {
@@ -218,7 +218,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         color: 'green'
       })
     } else {
-      const response = await $fetch('http://localhost:5666/api/v1/routes', {
+      const response = await $fetch(`${BASE_URL}/routes`, {
         method: 'POST',
         body: xmlData,
         headers: {
