@@ -11,7 +11,7 @@ import java.util.Map;
 @ApplicationScoped
 public class RequestService {
 
-    public final static String S1_BASE_URL = "http://localhost:8080/api/v1";
+    public final static String S1_BASE_URL = "http://localhost:5666/api/v1";
 
     @Inject
     private Client client;
@@ -19,7 +19,9 @@ public class RequestService {
     public <T> T makeRequest(String method, String url, Entity<?> entity, Class<T> responseType, Map<String, Object> queryParams) {
         var target = client.target(S1_BASE_URL + url);
         if (queryParams != null) {
-            queryParams.forEach(target::queryParam);
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                target = target.queryParam(entry.getKey(), entry.getValue());
+            }
         }
 
         try (var response = target.request()

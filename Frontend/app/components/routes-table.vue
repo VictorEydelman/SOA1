@@ -2,44 +2,7 @@
 import type {TableColumn} from '@nuxt/ui'
 import {UButton} from '#components'
 import {ref} from 'vue'
-import xml2js from 'xml2js'
-
-const BASE_URL = 'http://localhost:8080/api/v1'
-
-function normalizeLocation(location: Location): Location {
-  return {
-    id: +location.id,
-    x: +location.x,
-    y: +location.y,
-    z: +location.z,
-    name: location.name
-  }
-}
-
-function normalizeRoute(route: Route): Route {
-  return {
-    id: +route.id,
-    name: route.name,
-    coordinates: {
-      id: +route.coordinates.id,
-      x: +route.coordinates.x,
-      y: +route.coordinates.y
-    },
-    creationDate: new Date(route.creationDate),
-    from: route.from && normalizeLocation(route.from),
-    to: normalizeLocation(route.to),
-    distance: route.distance && +route.distance
-  }
-}
-
-async function parseXmlRoutes(xmlText: string): Promise<Route[]> {
-  const obj = await xml2js.parseStringPromise(xmlText, {
-    explicitArray: false
-  });
-  if (!obj.routes?.route) return [];
-  if (!(obj.routes.route instanceof Array)) return [obj.routes.route];
-  return obj.routes.route;
-}
+import {BASE_URL, normalizeRoute, parseXmlRoutes} from "~/utils/routes";
 
 const sorting = ref({});
 
@@ -60,7 +23,7 @@ const query = computed(() => ({
   ...filterValues.value
 }));
 
-const {data, error, pending, refresh} = useFetch(`${BASE_URL}/routes`, {
+const {data, error, refresh} = useFetch(`${BASE_URL}/routes`, {
   method: 'get',
   lazy: true,
   transform: async (data) => data && (await parseXmlRoutes(data)).map(normalizeRoute),

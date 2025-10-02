@@ -8,6 +8,7 @@
       <h1 class="text-2xl font-semibold">Additional Operations</h1>
     </div>
     <AdditionalOperations />
+    <AdditionalTables />
   </div>
 </template>
 <script setup lang="ts">

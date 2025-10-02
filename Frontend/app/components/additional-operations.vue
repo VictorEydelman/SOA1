@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import xml2js from "xml2js";
 
-function parseXml(xmlText: string) {
-  return xml2js.parseStringPromise(xmlText, {
-    explicitArray: false
-  });
-}
-
-const BASE_URL = 'http://localhost:8080/api/v1'
+import {BASE_URL, parseXml} from "~/utils/routes";
 
 const sum = ref<number>();
 
