@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import xml2js from "xml2js";
 
 import {BASE_URL, parseXml} from "~/utils/routes";
 
@@ -17,8 +18,8 @@ const inputThreshold = ref<number>();
 const threshold = ref<number>();
 
 async function onCountLessClick() {
-    threshold.value = inputThreshold.value;
-    inputThreshold.value = undefined;
+  threshold.value = inputThreshold.value;
+  inputThreshold.value = undefined;
   const resp = await $fetch(`${BASE_URL}/routes/distance/count-less`, {
     method: 'get',
     query: { threshold: threshold.value }

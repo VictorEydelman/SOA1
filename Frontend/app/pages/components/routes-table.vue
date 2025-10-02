@@ -1,9 +1,34 @@
 <script setup lang="ts">
 import type {TableColumn} from '@nuxt/ui'
 import {UButton} from '#components'
-import {ref} from 'vue'
+import {ref, computed, h} from 'vue'
+import xml2js from 'xml2js'
+import * as v from 'valibot'
+import type { FormSubmitEvent } from '@nuxt/ui'
 import {BASE_URL, normalizeRoute, parseXmlRoutes} from "~/utils/routes";
+interface Location {
+  id: number
+  x: number
+  y: number
+  z: number
+  name: string
+}
 
+interface Coordinates {
+  id: number
+  x: number
+  y: number
+}
+
+interface Route {
+  id: number
+  name: string
+  coordinates: Coordinates
+  creationDate: Date
+  from?: Location
+  to: Location
+  distance?: number
+}
 const sorting = ref({});
 
 const filterParams = ['id', 'name', 'distance', 'coordinates-x', 'coordinates-y',
@@ -85,10 +110,17 @@ const columns: TableColumn<Route>[] = [
     accessorKey: 'distance',
     sortable: true
   }, {
+    name: "update",
+    cell: props => h(UButton, {
+      color: 'orange', variant: 'outline',
+      icon: 'i-lucide-refresh-ccw', loadingAuto: true,
+      onClick: (route) => navigateTo('form-update/'+props.row.getAllCells()[0].getValue())
+    })
+  }, {
     name: " ",
     cell: props => h(UButton, {
       color: 'error', variant: 'outline',
-       icon: 'i-lucide-trash', loadingAuto: true,
+      icon: 'i-lucide-trash', loadingAuto: true,
       onClick: () => deleteRoute(props.row.getAllCells()[0].getValue())
     })
   }
@@ -98,7 +130,7 @@ columns.forEach(col => {
   col.meta = {
     class: {
       th: "text-left px-4 py-3",
-      td: "border-t px-4 py-3 text-white text-xs",
+      td: "border-t px-4 py-3 text-xs",
     }
   }
   col.header = col.sortable ? ({column}) => {

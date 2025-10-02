@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>se.ifmo.SOA</groupId>
-  <artifactId>Service1</artifactId>
+  <artifactId>MainService</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Service1</name>
+  <name>MainService</name>
   <packaging>war</packaging>
 
   <properties>
