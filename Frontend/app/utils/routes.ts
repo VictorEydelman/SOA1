@@ -1,7 +1,7 @@
 import xml2js from "xml2js";
 
 export const BASE_URL = 'http://localhost:5666/api/v1'
-export const SECOND_URL = 'http://localhost:24770/Service2-1.0/api/v1/navigator'
+export const SECOND_URL = 'https://localhost:24771/Service2-1.0/api/v1/navigator'
 
 export function normalizeLocation(location: Location): Location {
     return {
