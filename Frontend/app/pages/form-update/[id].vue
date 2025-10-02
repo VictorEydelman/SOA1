@@ -261,13 +261,6 @@ watch(currentId, (newId) => {
 
 <template>
   <div class="max-w-2xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-6">
-      <NuxtLink to="/">
-        <UButton color="primary">
-          Назад
-        </UButton>
-      </NuxtLink>
-    </div>
     <div class="mb-6">
       <h1 class="text-2xl font-bold">
        Edit Route
@@ -380,14 +373,17 @@ watch(currentId, (newId) => {
         </UButton>
 
         <UButton
-            color="gray"
-            variant="ghost"
+            color="warning"
+            variant="soft"
             @click="resetForm"
         >
-          Очистить форму
+          Reset Form
         </UButton>
-
-
+        <NuxtLink to="/">
+          <UButton color="error" variant="outline">
+            Back to Main
+          </UButton>
+        </NuxtLink>
       </div>
     </UForm>
   </div>

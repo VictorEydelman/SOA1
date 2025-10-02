@@ -285,15 +285,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <UButton type="submit" :loading="false">
           {{ isEditing ? 'Update Route' : 'Create Route' }}
         </UButton>
-
-
         <UButton
-            color="gray"
-            variant="ghost"
+            color="warning"
+            variant="soft"
             @click="resetForm"
         >
-          Cancel
+          Reset Form
         </UButton>
+        <NuxtLink to="/">
+          <UButton color="error" variant="outline">
+            Back to Main
+          </UButton>
+        </NuxtLink>
       </div>
     </UForm>
   </div>
