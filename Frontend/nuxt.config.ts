@@ -8,7 +8,7 @@ export default defineNuxtConfig({
         '@tailwindcss/vite'
     ],
     app: {
-        baseURL: '/~s367656/Soa',
-        cdnURL: './'
+        baseURL: '/~s367656/Soa/',
+        cdnURL: '/~s367656/Soa/'
     }
 })
