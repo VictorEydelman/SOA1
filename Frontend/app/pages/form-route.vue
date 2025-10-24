@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
+import type {FormSubmitEvent} from '@nuxt/ui'
 
 definePageMeta({
   title: 'update'
@@ -83,6 +83,22 @@ const routeId = ref<number | null>(null)
 
 const toast = useToast()
 
+function loadRouteForEdit(route: any) {
+  isEditing.value = true
+  routeId.value = route.id
+
+  state.name = route.name
+  state.coordinates = { ...route.coordinates }
+  state.to = { ...route.to }
+  state.distance = route.distance
+
+  if (route.from) {
+    state.from = { ...route.from }
+  } else {
+    state.from = undefined
+  }
+}
+
 function resetForm() {
   isEditing.value = false
   routeId.value = null
@@ -121,7 +137,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 	${routeData.distance ? `	<distance>${routeData.distance}</distance>` : ''}
 </route>`
 
-    const response = await $fetch('http://localhost:5666/api/v1/routes', {
+    const response = await $fetch(`${BASE_URL}/routes`, {
       method: 'POST',
       body: xmlData,
       headers: {
@@ -210,7 +226,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               variant="outline"
               @click="state.from = { name: '', x: 0, y: 0, z: 0 }"
           >
-            Добавить From Location
+            Add From Location
           </UButton>
           <UButton
               v-else
@@ -266,12 +282,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </UButton>
 
         <UButton
-            color="gray"
-            variant="ghost"
+            color="warning"
+            variant="soft"
             @click="resetForm"
         >
-          Cancel
+          Reset Form
         </UButton>
+        <NuxtLink to="/">
+          <UButton color="error" variant="outline">
+            Back to Main
+          </UButton>
+        </NuxtLink>
       </div>
     </UForm>
   </div>

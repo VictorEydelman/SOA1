@@ -6,5 +6,9 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/ui',
         '@tailwindcss/vite'
-    ]
+    ],
+    app: {
+        baseURL: '/~s367656/Soa/',
+        cdnURL: '/~s367656/Soa/'
+    }
 })

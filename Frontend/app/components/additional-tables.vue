@@ -73,7 +73,7 @@ columns.forEach(col => {
   col.meta = {
     class: {
       th: "text-left px-4 py-3",
-      td: "border-t px-4 py-3 text-xs",
+      td: "border-t px-4 py-3 text-white text-xs",
     }
   }
 });

@@ -1,20 +1,48 @@
 package ru.itmo.service2.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 
 @ApplicationScoped
 public class RequestService {
 
-    public final static String S1_BASE_URL = "http://localhost:5666/api/v1";
+    public static Client createSelfTrustedClient() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[]{};
+                        }
+                    }
+            };
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            return JerseyClientBuilder.newBuilder()
+                    .sslContext(sslContext)
+                    .hostnameVerifier((hostname, session) -> true) // Отключаем проверку hostname
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create unsafe client", e);
+        }
+    }
 
-    @Inject
-    private Client client;
+    public final static String S1_BASE_URL = "https://localhost:5666/api/v1";
+
+    private final Client client = createSelfTrustedClient();
 
     public <T> T makeRequest(String method, String url, Entity<?> entity, Class<T> responseType, Map<String, Object> queryParams) {
         var target = client.target(S1_BASE_URL + url);
