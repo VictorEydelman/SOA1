@@ -12,8 +12,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>19</maven.compiler.target>
-    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
     <junit.version>5.13.2</junit.version>
     <payara.version>6.2025.9</payara.version>
       <jakarta.version>2.0.0</jakarta.version> <!-- Убедитесь, что версия актуальна -->
