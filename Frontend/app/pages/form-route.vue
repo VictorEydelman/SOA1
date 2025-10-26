@@ -168,7 +168,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   <div class="max-w-2xl mx-auto p-6">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">
-        {{ isEditing ? 'Edit Route' : 'Create New Route' }}
+        Create New Route
       </h1>
       <UButton
           v-if="isEditing"
@@ -181,7 +181,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </div>
 
     <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit">
-      <!-- Basic Route Information -->
       <div class="grid grid-cols-1 gap-4">
         <UFormField label="Route Name" name="name">
           <UInput v-model="state.name" placeholder="Enter route name" />
@@ -198,7 +197,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
 
-      <!-- Coordinates -->
       <div class="border rounded-lg p-4">
         <h3 class="text-lg font-semibold mb-4">Coordinates</h3>
         <div class="grid grid-cols-2 gap-4">
@@ -219,10 +217,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
 
-      <!-- From Location (Optional) -->
       <div class="border rounded-lg p-4">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold">From Location (Optional)</h3>
+          <h3 class="text-lg font-semibold">From Location</h3>
           <UButton
               v-if="!state.from"
               color="primary"
@@ -259,7 +256,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
 
-      <!-- To Location (Required) -->
       <div class="border rounded-lg p-4">
         <h3 class="text-lg font-semibold mb-4">To Location</h3>
         <div class="grid grid-cols-1 gap-4">
@@ -280,11 +276,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="flex gap-3 pt-4">
         <UButton type="submit" :loading="false">
-          {{ isEditing ? 'Update Route' : 'Create Route' }}
+          Create Route
         </UButton>
+
         <UButton
             color="warning"
             variant="soft"

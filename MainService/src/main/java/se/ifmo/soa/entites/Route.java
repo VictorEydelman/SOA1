@@ -8,11 +8,11 @@ import se.ifmo.soa.config.ZonedDateTimeXmlAdapter;
 
 @Entity
 @Table(name = "soa_route")
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Builder
+@Setter
+@Getter
 @XmlRootElement
 public class Route {
     @Id
@@ -24,6 +24,8 @@ public class Route {
     @JoinColumn(name = "coordinates_id", nullable = false)
     private Coordinates coordinates; //Поле не может быть null
     @Column(nullable = false)
+    @XmlJavaTypeAdapter(ZonedDateTimeXmlAdapter.class)
+    @Getter(AccessLevel.NONE)
     private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "from_location_id")
