@@ -1,20 +1,21 @@
-package ru.itmo.service2.service;
+package ru.itmo.service2.ejb;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.ws.rs.client.Entity;
 import ru.itmo.service2.domain.Coordinates;
 import ru.itmo.service2.domain.Location;
 import ru.itmo.service2.domain.Route;
 import ru.itmo.service2.domain.RouteList;
+import ru.itmo.service2.remote.RouteService;
 
 import java.util.Map;
 
-@ApplicationScoped
-public class RouteService {
+@Stateless
+public class RouteServiceBean implements RouteService {
 
-    @Inject
-    private RequestService requestService;
+    @EJB
+    private RequestServiceBean requestService;
 
     public RouteList findRoutes(long idFrom, long idTo, String orderBy) {
         RouteList routes = requestService.get("/routes", RouteList.class, Map.of(

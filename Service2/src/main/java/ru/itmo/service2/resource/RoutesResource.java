@@ -1,18 +1,20 @@
 package ru.itmo.service2.resource;
 
-import jakarta.inject.Inject;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import ru.itmo.service2.service.RouteService;
+import ru.itmo.service2.remote.RouteService;
 
+@Stateless
 @Path("/navigator")
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_XML)
 public class RoutesResource {
 
-    @Inject
+    @EJB(mappedName = "java:global/Service2-EJB-1.0/RouteServiceBean!ru.itmo.service2.remote.RouteService")
     private RouteService routeService;
 
     @GET

@@ -1,6 +1,6 @@
-package ru.itmo.service2.service;
+package ru.itmo.service2.ejb;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.Stateless;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
@@ -12,33 +12,8 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
-@ApplicationScoped
-public class RequestService {
-
-    public static Client createSelfTrustedClient() {
-        try {
-            TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
-                        @Override
-                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
-                        @Override
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[]{};
-                        }
-                    }
-            };
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            return JerseyClientBuilder.newBuilder()
-                    .sslContext(sslContext)
-                    .hostnameVerifier((hostname, session) -> true) // Отключаем проверку hostname
-                    .build();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create unsafe client", e);
-        }
-    }
+@Stateless
+public class RequestServiceBean {
 
     public final static String S1_BASE_URL = "https://localhost:5666/api/v1";
 
@@ -68,6 +43,32 @@ public class RequestService {
 
     public <T> T post(String url, Entity<?> entity, Class<T> responseType) {
         return makeRequest("POST", url, entity, responseType, null);
+    }
+
+
+    private Client createSelfTrustedClient() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[]{};
+                        }
+                    }
+            };
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            return JerseyClientBuilder.newBuilder()
+                    .sslContext(sslContext)
+                    .hostnameVerifier((hostname, session) -> true) // Отключаем проверку hostname
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create unsafe client", e);
+        }
     }
 
 }
