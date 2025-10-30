@@ -1,0 +1,26 @@
+server:
+  port: 5666
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: soa
+  jersey:
+    application-path: /api/v1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/studs
+    username: s291485
+    password: qz6XMfGNKAgNOWkq
+  jpa:
+    datasource: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update

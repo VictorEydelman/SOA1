@@ -1,32 +1,27 @@
 package se.ifmo.soa.service;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import se.ifmo.soa.entites.Coordinates;
 import se.ifmo.soa.entites.Location;
 import se.ifmo.soa.entites.Route;
-import se.ifmo.soa.interfaces.RouteService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
 @Transactional
-public class RouteServiceImpl implements RouteService {
-    @PersistenceContext(unitName = "route")
-    private EntityManager entityManager;
+@AllArgsConstructor
+public class RouteRepository {
+    private final RouteRepository routeRepository;
 
-    @Transactional
-    @Override
     public Route save(Route route) {
-        entityManager.merge(route);
+        routeRepository.save(route);
         return route;
     }
-    @Transactional
-    @Override
+
     public List<Route> getByParameters(
             Integer page,
             Integer size,
@@ -85,41 +80,33 @@ public class RouteServiceImpl implements RouteService {
 
         return routes;
     }
-    @Override
+
     public void addPredicates(Object param, List<Predicate> predicates, String paramName, CriteriaBuilder cb, Root<Route> root){
         if(param != null){
             predicates.add(cb.equal(root.get(paramName),param));
         }
     }
-    @Override
+
     public void addPredicatesCoordinates(Object param, List<Predicate> predicates, String paramName, CriteriaBuilder cb, Join<Route, Coordinates> root){
         if(param != null){
             predicates.add(cb.equal(root.get(paramName),param));
         }
     }
-    @Override
+
     public void addPredicatesLocation(Object param, List<Predicate> predicates, String paramName, CriteriaBuilder cb, Join<Route, Location> root){
         if(param != null){
             predicates.add(cb.equal(root.get(paramName),param));
         }
     }
-    @Transactional
-    @Override
+
     public Route getById(Integer id){
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Route> query = cb.createQuery(Route.class);
-        Root<Route> root = query.from(Route.class);
-        query.where(cb.equal(root.get("id"),id));
-        return entityManager.createQuery(query).getSingleResult();
+        return routeRepository.getById(id);
     }
-    @Transactional
-    @Override
+
     public void deleteById(Integer id) {
-        Route route = getById(id);
-        entityManager.remove(route);
+        routeRepository.deleteById(id);
     }
-    @Transactional
-    @Override
+
     public Integer getDistance(){
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Integer> query = cb.createQuery(Integer.class);
@@ -127,8 +114,7 @@ public class RouteServiceImpl implements RouteService {
         query.select(cb.sum(root.get("distance")));
         return entityManager.createQuery(query).getSingleResult();
     }
-    @Transactional
-    @Override
+
     public Long CountDistanceLessThan(Integer threshold) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
@@ -138,8 +124,7 @@ public class RouteServiceImpl implements RouteService {
 
         return entityManager.createQuery(query).getSingleResult();
     }
-    @Transactional
-    @Override
+
     public List<Route> getAllbyStartName(String prefix) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Route> query = cb.createQuery(Route.class);
