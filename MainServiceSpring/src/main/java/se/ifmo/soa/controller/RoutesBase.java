@@ -17,6 +17,7 @@ import se.ifmo.soa.service.RouteService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Path("/routes")
@@ -69,7 +70,7 @@ public class RoutesBase {
         Location to = locationService.fromDAO(routeDAO.getTo());
         Location from = locationService.fromDAO(routeDAO.getFrom());
         Route route = Route.builder().name(routeDAO.getName()).coordinates(coordinates)
-               // .creationdate(ZonedDateTime.now())
+                .creationdate(ZonedDateTime.now())
                 .to(to).from(from).distance(routeDAO.getDistance()).build();
         routeService.save(route);
         //System.out.println(route.getId()+" "+route.getDistance()+" "+route.getCreationdate());
