@@ -1,10 +1,11 @@
 package se.ifmo.soa.DAO;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.ifmo.soa.entites.Route;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "routes")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RouteList {
 
     @XmlElement(name = "route")

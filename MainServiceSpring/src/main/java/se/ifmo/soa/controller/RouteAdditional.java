@@ -1,24 +1,25 @@
 package se.ifmo.soa.controller;
 
-
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.ifmo.soa.DAO.DistanceCount;
 import se.ifmo.soa.DAO.DistanceSum;
 import se.ifmo.soa.DAO.RouteList;
 import se.ifmo.soa.service.RouteService;
 
 @Path("/routes")
-
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_XML)
+@Component
+@NoArgsConstructor
 public class RouteAdditional {
-    private final RouteService routeService;
 
-    public RouteAdditional(RouteService routeService) {
-        this.routeService = routeService;
-    }
+    @Autowired
+    private RouteService routeService;
 
     @GET
     @Path("/distance/sum")

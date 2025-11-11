@@ -1,7 +1,5 @@
 package se.ifmo.soa.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.ifmo.soa.DAO.LocationDAO;
 import se.ifmo.soa.entites.Location;
