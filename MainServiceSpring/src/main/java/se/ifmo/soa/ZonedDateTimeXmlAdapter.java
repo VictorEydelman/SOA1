@@ -1,11 +1,13 @@
 package se.ifmo.soa;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import org.springframework.stereotype.Component;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class ZonedDateTimeXmlAdapter extends XmlAdapter<String, ZonedDateTime> {
     @Override
     public ZonedDateTime unmarshal(String value) {

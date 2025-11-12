@@ -2,13 +2,11 @@ package se.ifmo.soa.controller;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
 import se.ifmo.soa.DAO.RouteList;
 import se.ifmo.soa.DAO.RouteResponse;
 import se.ifmo.soa.DAO.RoutesDAO;
@@ -20,25 +18,22 @@ import se.ifmo.soa.service.RouteService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import jakarta.ws.rs.core.MediaType;
+
 @Path("/routes")
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_XML)
 @Component
-@AllArgsConstructor
+@NoArgsConstructor
 public class RoutesBase {
-    @Autowired
-    RouteService routeService;
-    @Autowired
-    LocationService locationService;
 
-    // Конструктор с зависимостями (для Spring)
+    @Autowired
+    private RouteService routeService;
+    @Autowired
+    private LocationService locationService;
 
     private final XmlMapper xmlMapper = new XmlMapper();
-
 
     @GET
     public Response getRoutes(
@@ -78,7 +73,7 @@ public class RoutesBase {
         Location to = locationService.fromDAO(routeDAO.getTo());
         Location from = locationService.fromDAO(routeDAO.getFrom());
         Route route = Route.builder().name(routeDAO.getName()).coordinates(coordinates)
-               // .creationdate(ZonedDateTime.now())
+                .creationdate(ZonedDateTime.now())
                 .to(to).from(from).distance(routeDAO.getDistance()).build();
         routeService.save(route);
         //System.out.println(route.getId()+" "+route.getDistance()+" "+route.getCreationdate());

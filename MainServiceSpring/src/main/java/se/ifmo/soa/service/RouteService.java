@@ -2,6 +2,7 @@ package se.ifmo.soa.service;
 
 
 import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RouteService {
+
     private final RouteRepository routeRepository;
 
-    public RouteService(RouteRepository routeRepository) {
-        this.routeRepository = routeRepository;
-    }
-
     public Route save(Route route) {
-        routeRepository.save(route);
-        return route;
+        return routeRepository.save(route);
     }
 
     public List<Route> getByParameters(
@@ -137,7 +135,7 @@ public class RouteService {
     }
 
     public Route getById(Long id) {
-        return routeRepository.getById(id);
+        return routeRepository.findById(id).orElse(null);
     }
 
     public void deleteById(Long id) {

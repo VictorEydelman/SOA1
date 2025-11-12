@@ -7,6 +7,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import se.ifmo.soa.ZonedDateTimeXmlAdapter;
 
 @Entity
@@ -27,9 +28,10 @@ public class Route {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coordinates_id", nullable = false)
     private Coordinates coordinates; //Поле не может быть null
-    /*@Column(nullable = false)
+    @Column(nullable = false, updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @XmlJavaTypeAdapter(ZonedDateTimeXmlAdapter.class)
-    private java.time.ZonedDateTime creationdate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически*/
+    private java.time.ZonedDateTime creationdate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "from_location_id")
     private Location from; //Поле может быть null
