@@ -31,7 +31,7 @@ public class Route {
     @Column(nullable = false, updatable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     @XmlJavaTypeAdapter(ZonedDateTimeXmlAdapter.class)
-    private java.time.ZonedDateTime creationdate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "from_location_id")
     private Location from; //Поле может быть null

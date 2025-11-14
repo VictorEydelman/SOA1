@@ -73,7 +73,7 @@ public class RoutesBase {
         Location to = locationService.fromDAO(routeDAO.getTo());
         Location from = locationService.fromDAO(routeDAO.getFrom());
         Route route = Route.builder().name(routeDAO.getName()).coordinates(coordinates)
-                .creationdate(ZonedDateTime.now())
+                .creationDate(ZonedDateTime.now())
                 .to(to).from(from).distance(routeDAO.getDistance()).build();
         routeService.save(route);
         //System.out.println(route.getId()+" "+route.getDistance()+" "+route.getCreationdate());
