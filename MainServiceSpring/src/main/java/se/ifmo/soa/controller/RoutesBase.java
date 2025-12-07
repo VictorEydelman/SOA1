@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ifmo.soa.DAO.RouteList;
+import se.ifmo.soa.DAO.RouteResponse;
 import se.ifmo.soa.DAO.RoutesDAO;
 import se.ifmo.soa.entites.Coordinates;
 import se.ifmo.soa.entites.Location;
@@ -59,7 +60,9 @@ public class RoutesBase {
                 page, size, sort, id, name, distance, coordinatesX,
                 coordinatesY, toName, toX, toY, toZ, fromName,
                 fromX, fromY, fromZ);
-        return Response.ok(new RouteList(routes)).build();
+        var r = new RouteList(routes);
+        System.out.println(r);
+        return Response.ok(r).build();
     }
 
     @POST
@@ -70,7 +73,7 @@ public class RoutesBase {
         Location to = locationService.fromDAO(routeDAO.getTo());
         Location from = locationService.fromDAO(routeDAO.getFrom());
         Route route = Route.builder().name(routeDAO.getName()).coordinates(coordinates)
-                .creationdate(ZonedDateTime.now())
+                .creationDate(ZonedDateTime.now())
                 .to(to).from(from).distance(routeDAO.getDistance()).build();
         routeService.save(route);
         //System.out.println(route.getId()+" "+route.getDistance()+" "+route.getCreationdate());
@@ -82,7 +85,11 @@ public class RoutesBase {
     public Response getRouteById(
             @PathParam("id") Long id) {
         Route route = routeService.getById(id);
-        return Response.ok(route).build();
+        System.out.println(route);
+        RouteResponse routeResponse = RouteResponse.builder().id(route.getId())
+                .name(route.getName()).distance(route.getDistance()).build();
+        System.out.println(routeResponse);
+        return Response.ok(routeResponse).build();
     }
 
     @PUT
