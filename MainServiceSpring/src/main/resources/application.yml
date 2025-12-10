@@ -36,6 +36,7 @@ spring:
         enabled: true
         import-check:
           enabled: false
+      enabled: false
     compatibility-verifier:
       enabled: false
 management:

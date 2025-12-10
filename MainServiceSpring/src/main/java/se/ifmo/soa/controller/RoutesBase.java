@@ -1,6 +1,7 @@
 package se.ifmo.soa.controller;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -66,6 +67,7 @@ public class RoutesBase {
     }
 
     @POST
+    @Transactional
     public Response addRoutes(InputStream routeXML) throws IOException {
         RoutesDAO routeDAO = xmlMapper.readValue(routeXML, RoutesDAO.class);
         Coordinates coordinates = Coordinates.builder().y(routeDAO.getCoordinates().getY())

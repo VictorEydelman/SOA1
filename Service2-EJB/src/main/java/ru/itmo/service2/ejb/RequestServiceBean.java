@@ -1,10 +1,11 @@
 package ru.itmo.service2.ejb;
 
-import jakarta.ejb.Stateless;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import org.glassfish.jersey.client.JerseyClientBuilder;
+import ru.itmo.service2.domain.Route;
+import ru.itmo.service2.domain.RouteList;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -12,10 +13,10 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
-@Stateless
-public class RequestServiceBean {
+// @Stateless
+public class RequestServiceBean implements RequestService {
 
-    public final static String S1_BASE_URL = "https://localhost:5666/api/v1";
+    public final static String S1_BASE_URL = "http://localhost:5666/api/v1";
 
     private final Client client = createSelfTrustedClient();
 
@@ -45,6 +46,19 @@ public class RequestServiceBean {
         return makeRequest("POST", url, entity, responseType, null);
     }
 
+    @Override
+    public RouteList getRoutes(int page, int size, String sort) {
+        return get("/routes", RouteList.class, Map.of(
+                "page", page,
+                "size", size,
+                "sort", sort
+        ));
+    }
+
+    @Override
+    public Route postRoute(Route route) {
+        return post("/routes", Entity.xml(route), Route.class);
+    }
 
     private Client createSelfTrustedClient() {
         try {

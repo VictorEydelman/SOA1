@@ -2,27 +2,20 @@ package ru.itmo.service2.ejb;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
-import jakarta.ws.rs.client.Entity;
 import ru.itmo.service2.domain.Coordinates;
 import ru.itmo.service2.domain.Location;
 import ru.itmo.service2.domain.Route;
 import ru.itmo.service2.domain.RouteList;
 import ru.itmo.service2.remote.RouteService;
 
-import java.util.Map;
-
 @Stateless
 public class RouteServiceBean implements RouteService {
 
     @EJB
-    private RequestServiceBean requestService;
+    private RequestService requestService;
 
     public RouteList findRoutes(long idFrom, long idTo, String orderBy) {
-        RouteList routes = requestService.get("/routes", RouteList.class, Map.of(
-                "page", 0,
-                "size", 10000,
-                "sort", orderBy
-        ));
+        RouteList routes = requestService.getRoutes(0, 10000, orderBy);
 
         var filtered = routes.getRoutes().stream()
                 .filter(route -> route.getFrom() != null &&
@@ -49,7 +42,7 @@ public class RouteServiceBean implements RouteService {
                         .build())
                 .distance(distance)
                 .build();
-        return requestService.post("/routes", Entity.xml(route), Route.class);
+        return requestService.postRoute(route);
     }
 
 }
